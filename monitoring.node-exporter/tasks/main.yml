@@ -1,0 +1,74 @@
+---
+- name: MONITORING.NODE-EXPORTER | Create user
+  user:
+    name: "node-exporter"
+    shell: /sbin/nologin
+  tags:
+    - system
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Ensure node-exporter folder exists
+  file:
+    path: "{{ node_exporter__dir }}"
+    state: directory
+  tags:
+    - prepare
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Get Node Exporter
+  unarchive:
+    src: "{{ node_exporter__url }}"
+    dest: "{{ node_exporter__dir }}"
+    remote_src: yes
+    extra_opts: ['--strip-components=1', '--show-stored-names']
+  tags:
+    - files
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Install Node Exporter
+  copy:
+    src: "{{ node_exporter__dir }}/node_exporter"
+    dest: "/usr/sbin"
+    remote_src: yes
+    mode: 755
+  tags:
+    - files
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Ensure sysconfig folder exists
+  file:
+    path: "/etc/sysconfig"
+    state: directory
+  tags:
+    - prepare
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Copy systemctl service
+  copy:
+    src: "files/node_exporter.service"
+    dest: "/etc/systemd/system/node_exporter.service"
+    mode: 755
+  tags:
+    - files
+    - service
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Copy systemctl config
+  template:
+    src: "templates/node_exporter"
+    dest: "/etc/sysconfig/node_exporter"
+    mode: 755
+  tags:
+    - files
+    - service
+    - node-exporter
+
+- name: MONITORING.NODE-EXPORTER | Enable and Run Node Exporter Service
+  systemd:
+    name: node_exporter
+    daemon_reload: yes
+    enabled: true
+    state: restarted
+  tags:
+    - service
+    - node-exporter

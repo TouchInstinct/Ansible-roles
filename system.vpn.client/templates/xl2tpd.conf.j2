@@ -1,0 +1,10 @@
+[lac {{ vpn__connection_id }}]
+lns = {{ vpn__public_host }}
+ppp debug = yes
+require chap = yes
+pppoptfile = {{ vpn__pppd_config_dir }}/options.l2tpd.client
+length bit = yes
+redial=yes
+redial timeout=2
+max redials=100000000
+autodial=yes

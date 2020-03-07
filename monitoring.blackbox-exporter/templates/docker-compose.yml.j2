@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  blackbox-exporter:
+    container_name: blackbox-exporter
+    image: "{{ blackbox__image }}"
+    user: root
+    volumes:
+      - ./blackbox.yml:/etc/blackbox.yml:ro
+    restart: unless-stopped
+    ports:
+      - "{{ blackbox_exporter__port }}:9115"
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "50m"
+    command: --config.file=/etc/blackbox.yml

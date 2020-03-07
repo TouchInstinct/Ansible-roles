@@ -1,0 +1,6 @@
+---
+traefik__image_name: traefik
+traefik__image_tag: v1.7.20
+
+traefik__image: "{{ traefik__image_name }}:{{ traefik__image_tag }}"
+traefik__letsencrypt_email: hi@touchin.ru

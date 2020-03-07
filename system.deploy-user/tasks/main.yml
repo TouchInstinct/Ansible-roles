@@ -1,0 +1,30 @@
+---
+- name: SYSTEM.DEPLOY-USER | Create user
+  user:
+    name: "{{ system__deploy_user_name }}"
+    shell: /bin/bash
+    home: "{{ system__deploy_user_home }}"
+    createhome: yes
+  tags:
+    - system
+    - deploy-user
+
+- name: SYSTEM.DEPLOY-USER | Ensure Docker dir exists
+  file:
+    path: "{{ system__deploy_user_home }}/.docker"
+    state: directory
+    owner: "{{ system__deploy_user_name }}"
+    mode: 0755
+  when: docker is defined
+  tags:
+    - docker
+    - prepare
+
+- name: SYSTEM.DEPLOY-USER | Copy Docker credentials
+  template:
+    src: "templates/docker-config.json.j2"
+    dest: "{{ system__deploy_user_home }}/.docker/config.json"
+  when: docker is defined
+  tags:
+    - files
+    - docker

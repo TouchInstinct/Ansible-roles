@@ -1,0 +1,5 @@
+filebeat__image_name: "docker.elastic.co/beats/filebeat"
+filebeat__image_tag: "7.5.2"
+filebeat__image: "{{ filebeat__image_name }}:{{ filebeat__image_tag }}"
+
+filebeat__config_user: 0

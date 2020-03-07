@@ -1,0 +1,3 @@
+prometheus__image_name: "prom/prometheus"
+prometheus__image_tag: "v2.15.2"
+prometheus__image: "{{ prometheus__image_name }}:{{ prometheus__image_tag }}"

@@ -1,0 +1,16 @@
+# grafana__server_root: "http://10.0.8.1:7001"
+grafana__user_id: 104
+
+grafana__image_name: "grafana/grafana"
+grafana__image_tag: "6.6.0-ubuntu"
+grafana__image: "{{ grafana__image_name }}:{{ grafana__image_tag }}"
+
+grafana__enable_ldap_auth: "true"
+
+grafana__default_labels:
+  "traefik.enable": "true"
+  "traefik.port": "3000"
+  "traefik.backend": "grafana"
+  "traefik.docker.network": "{{ docker__traefik_network }}"
+  "traefik.frontend.rule": "Host:{{ grafana.domain }}"
+  "traefik.frontend.entryPoints": "http"

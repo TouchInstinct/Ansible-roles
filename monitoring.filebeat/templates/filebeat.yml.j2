@@ -1,0 +1,23 @@
+monitoring.enabled: false
+output.file.enabled: false
+
+filebeat.inputs:
+  - type: container
+    paths: 
+      - "/var/lib/docker/containers/*/*.log"
+    processors:
+      - add_docker_metadata:
+          host: "unix:///var/run/docker.sock"
+          labels.dedot: true
+      - drop_event:
+          when:
+            equals:
+              container.name: "filebeat"
+      - drop_event:
+          when:
+            not:
+              equals:
+                container.labels.log_consumed-by: "filebeat"
+
+output.logstash:
+  hosts: {{ filebeat.logstash.hosts | to_json }}

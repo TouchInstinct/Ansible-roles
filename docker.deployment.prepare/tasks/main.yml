@@ -1,0 +1,29 @@
+---
+- name: DOCKER.DEPLOYMENT.PREPARE | Set facts
+  set_fact:
+    docker_deployment__deploy_path: "{{ system__deploy_user_home }}/{{ deployment_name }}"
+    docker_deployment__volume_path: "{{ system__volume_directory }}/{{ deployment_name }}"
+    docker_deployment__deploy_user_name: "{{ system__deploy_user_name }}"
+  tags:
+    - prepare
+
+- name: DOCKER.DEPLOYMENT.PREPARE | Create deployment directory
+  file:
+    path: "{{ docker_deployment__deploy_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ deployment_user | default(system__deploy_user_name) }}"
+  become: yes
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  tags:
+    - prepare
+
+- name: DOCKER.DEPLOYMENT.PREPARE | Create volume directory
+  file:
+    path: "{{ docker_deployment__volume_path }}"
+    state: directory
+    mode: 0755
+    owner: "{{ volume_user | default(docker_deployment__deploy_user_name) }}"
+  become: yes
+  tags:
+    - prepare

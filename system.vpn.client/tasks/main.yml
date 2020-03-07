@@ -1,0 +1,79 @@
+---
+- name: SYSTEM.VPN-CLIENT | Install dependencies
+  apt:
+    name:
+      - xl2tpd
+      - strongswan
+      - strongswan-starter
+      - strongswan-charon
+  tags:
+    - dependencies
+    - sys
+    - vpn
+
+- name: SYSTEM.VPN-CLIENT | Install xl2tpd configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ vpn__xl2tpd_config_dir }}/{{ item }}"
+  with_items:
+    - xl2tpd.conf
+  tags:
+    - files
+    - vpn
+
+- name: SYSTEM.VPN-CLIENT | Install pppd configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ vpn__pppd_config_dir }}/{{ item }}"
+  with_items:
+    - options.l2tpd.client
+  tags:
+    - files
+    - vpn
+
+- name: SYSTEM.VPN-CLIENT | Install pppd up script(s)
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ vpn__pppd_up_script_dir }}/{{ item }}"
+    mode: 0751
+  with_items:
+    - route10
+  tags:
+    - files
+    - vpn
+
+- name: SYSTEM.VPN-CLIENT | Install strongswan configuration
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ vpn__strongswan_config_dir }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0600
+  with_items:
+    - ipsec.conf
+    - ipsec.secrets
+  tags:
+    - files
+    - vpn
+
+- name: SYSTEM.VPN-CLIENT | Enable and restart strongswan unit(s)
+  systemd:
+    unit: "{{ item }}"
+    enabled: true
+    state: restarted
+  with_items:
+    - strongswan.service
+  tags:
+    - vpn
+    - service
+
+- name: SYSTEM.VPN-CLIENT | Enable and restart common systemd unit(s)
+  systemd:
+    unit: "{{ item }}"
+    enabled: true
+    state: restarted
+  with_items:
+    - xl2tpd.service
+  tags:
+    - vpn
+    - service

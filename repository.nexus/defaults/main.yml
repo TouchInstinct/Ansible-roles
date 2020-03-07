@@ -1,0 +1,9 @@
+nexus__image_name: "sonatype/nexus3"
+nexus__image_tag: "3.21.1"
+nexus__image: "{{ nexus__image_name }}:{{ nexus__image_tag }}"
+nexus__container_name: "nexus"
+
+nexus__ui_port: "8081"
+nexus__registry_port: "8082"
+
+nexus__volume_user: "200"
