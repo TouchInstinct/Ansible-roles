@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  alertmanager-telegram:
+    container_name: alertmanager-telegram
+    image: "{{ am_telegram__image }}"
+    networks:
+      - "{{ docker__prometheus_network }}"
+    volumes:
+      - "{{ docker_deployment__deploy_path }}/config.yml:/config.yaml:ro"
+      - "{{ docker_deployment__deploy_path }}/template.tmpl:/template.tmpl:ro"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+networks:
+  {{ docker__prometheus_network }}:
+    external: true

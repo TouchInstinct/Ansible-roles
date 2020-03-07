@@ -1,0 +1,3 @@
+am_telegram__image_name: "dhub.touchin.ru/common/alertmanager-telegram"
+am_telegram__image_tag: "latest"
+am_telegram__image: "{{ am_telegram__image_name }}:{{ am_telegram__image_tag }}"

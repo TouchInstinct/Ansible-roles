@@ -1,0 +1,34 @@
+---
+- name: MONITORING.ALERTMANAGER-TELEGRAM | Prepare deployment
+  include_role:
+    name: docker.deployment.prepare
+    public: "yes"
+  vars:
+    deployment_name: alertmanager-telegram
+  tags:
+    - alertmanager-telegram
+
+- name: MONITORING.ALERTMANAGER-TELEGRAM | Create mount placeholders
+  file:
+    path: "{{ docker_deployment__deploy_path }}/{{ item }}"
+    state: touch
+    mode: 0755
+    owner: "{{ deployment_user | default(system__deploy_user_name) }}"
+  loop:
+    - template.tmpl
+  tags:
+    - files
+    - alertmanager-telegram
+
+- name: MONITORING.ALERTMANAGER-TELEGRAM | Copy templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  loop:
+    - config.yml
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - alertmanager-telegram
