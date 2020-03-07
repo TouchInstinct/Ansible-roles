@@ -1,0 +1,52 @@
+---
+- name: DOCKER.TRAEFIK | Prepare deployment
+  include_role:
+    name: docker.deployment.prepare
+    public: "yes"
+  vars:
+    deployment_name: traefik
+  tags:
+    - traefik
+
+- name: DOCKER.TRAEFIK | Copy traefik config
+  template:
+    src: traefik.toml.j2
+    dest: "{{ docker_deployment__deploy_path }}/traefik.toml"
+    mode: 0644
+
+- name: DOCKER.TRAEFIK | Ensure ACME exists
+  copy:
+    content: ""
+    dest: "{{ docker_deployment__deploy_path }}/acme.json"
+    force: no
+    owner: root
+    mode: 0600
+  tags:
+    - traefik
+    - files
+
+- name: DOCKER.TRAEFIK | Create Traefik network
+  docker_network:
+    name: "{{ docker__traefik_network }}"
+  tags:
+    - traefik
+    - network
+
+- name: DOCKER.TRAEFIK | Run deployment
+  docker_container:
+    name: traefik
+    image: "{{ traefik__image }}"
+    command: "--api --docker"
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ docker__traefik_network }}"
+    ports:
+      - 80:80
+      - 443:443
+      - 127.0.0.1:5000:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "{{ docker_deployment__deploy_path }}/traefik.toml:/traefik.toml"
+      - "{{ docker_deployment__deploy_path  }}/acme.json:/acme.json"
+  tags:
+    - traefik

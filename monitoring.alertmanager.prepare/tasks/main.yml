@@ -1,0 +1,32 @@
+---
+- name: MONITORING.ALERTMANAGER | Prepare deployment
+  import_role:
+    name: docker.deployment.prepare
+  vars:
+    deployment_name: alertmanager
+  tags:
+    - alertmanager
+
+- name: MONITORING.ALERTMANAGER | Copy templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - alertmanager
+
+- name: MONITORING.ALERTMANAGER | Create mount placeholders
+  file:
+    path: "{{ docker_deployment__deploy_path }}/{{ item }}"
+    state: touch
+    mode: 0755
+    owner: "{{ deployment_user | default(system__deploy_user_name) }}"
+  loop:
+    - "alertmanager.yml"
+  tags:
+    - files
+    - alertmanager

@@ -1,0 +1,57 @@
+---
+- name: MONITORING.PROMETHEUS | Prepare deployment
+  include_role:
+    name: docker.deployment.prepare
+    public: "yes"
+  vars:
+    deployment_name: prometheus
+  tags:
+    - prometheus
+
+- name: MONITORING.PROMETHEUS | Create mount directories
+  file:
+    path: "{{ docker_deployment__deploy_path }}/{{ item }}"
+    state: directory
+    mode: 0755
+    owner: "{{ deployment_user | default(system__deploy_user_name) }}"
+  loop:
+    - "alert-rules"
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - prometheus
+
+- name: MONITORING.PROMETHEUS | Create mount placeholders
+  file:
+    path: "{{ docker_deployment__deploy_path }}/{{ item }}"
+    state: touch
+    mode: 0755
+    owner: "{{ deployment_user | default(system__deploy_user_name) }}"
+  loop:
+    - "prometheus.yml"
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - prometheus
+
+- name: MONITORING.PROMETHEUS | Copy templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - prometheus
+
+- name: MONITORING.PROMETHEUS | Create Prometheus Docker network
+  docker_network:
+    name: "{{ docker__prometheus_network }}"
+  tags:
+    - docker
+    - network
+    - prometheus

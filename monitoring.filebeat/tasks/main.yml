@@ -1,0 +1,39 @@
+---
+- name: MONITORING.FILEBEAT | Prepare deployment
+  import_role:
+    name: docker.deployment.prepare
+  vars:
+    deployment_name: filebeat
+  tags:
+    - filebeat
+
+- name: MONITORING.FILEBEAT | Copy templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  with_items:
+    - filebeat.yml
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - filebeat
+
+- name: MONITORING.FILEBEAT | Set config ownership
+  file:
+    path: "{{ docker_deployment__deploy_path }}/filebeat.yml"
+    owner: "{{ filebeat__config_user }}"
+  tags:
+    - files
+    - filebeat
+
+- name: MONITORING.FILEBEAT | Run deployment
+  docker_service:
+    restarted: "yes"
+    project_src: "{{ docker_deployment__deploy_path }}"
+  become: yes
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  tags:
+    - run
+    - filebeat

@@ -1,0 +1,3 @@
+blackbox__image_name: "prom/blackbox-exporter"
+blackbox__image_tag: "v0.16.0"
+blackbox__image: "{{ blackbox__image_name }}:{{ blackbox__image_tag }}"

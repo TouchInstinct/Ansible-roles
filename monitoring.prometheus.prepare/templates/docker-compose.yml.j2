@@ -1,0 +1,25 @@
+version: "3.7"
+
+services:
+  prometheus:
+    container_name: prometheus
+    image: "{{ prometheus__image }}"
+    networks:
+      - "{{ docker__prometheus_network }}"
+    volumes:
+      - "{{ docker_deployment__deploy_path }}/alert-rules:/etc/prometheus/alert-rules:ro"
+      - "{{ docker_deployment__deploy_path }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+    restart: unless-stopped
+    ports:
+      - "{{ prometheus__port }}:9090"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "1"
+        max-size: "50m"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+
+networks:
+  {{ docker__prometheus_network }}:
+    external: true

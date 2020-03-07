@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  grafana:
+    container_name: grafana
+    image: "{{ grafana__image }}"
+    user: "{{ grafana__user_id }}"
+    environment:
+      GF_SERVER_DOMAIN: "{{ grafana.domain }}"
+      GF_SERVER_ROOT_URL: "http://{{ grafana.domain }}"
+      GF_AUTH_LDAP_ENABLED: "{{ grafana__enable_ldap_auth }}"
+    volumes:
+      - "{{ docker_deployment__volume_path }}:/var/lib/grafana"
+      - "./ldap.toml:/etc/grafana/ldap.toml"
+    labels: {{ grafana__default_labels | combine(grafana.docker.labels | default({})) | to_json }}
+    networks: {{ grafana.docker.networks | default([]) | to_json }}
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "50m"
+
+{% if grafana.docker.networks is defined %}
+networks:
+  {% for network in grafana.docker.networks %}
+{{ network | indent(width=2) }}:
+    external: true
+  {% endfor %}
+{% endif %}

@@ -1,0 +1,46 @@
+---
+- name: SYSTEM.DEPENDENCIES | Install common dependencies
+  apt:
+    name:
+      - python3-pip
+      - nmap
+      - htop
+      - curl
+      - vim
+      - expect
+      - unzip
+      - bash-completion
+  become: yes
+  tags:
+    - dependencies
+
+- name: SYSTEM.DEPENDENCIES | Install Java dependencies
+  apt:
+    name:
+      - openjdk-8-jdk
+  when: java is defined and java|bool
+  tags:
+    - java
+    - dependencies
+
+- name: SYSTEM.DEPENDENCIES | Install MySQL dependencies
+  apt:
+    name:
+      - mysql-client
+      - python3-mysqldb
+  become: yes
+  when: mysql is defined and mysql|bool
+  tags:
+    - mysql
+    - dependencies
+
+- name: SYSTEM.DEPENDENCIES | Install Ansible Docker dependencies
+  pip:
+    name:
+      - docker
+      - docker-compose
+    executable: pip3
+  when: docker is defined and docker|bool
+  tags:
+    - docker
+    - dependencies

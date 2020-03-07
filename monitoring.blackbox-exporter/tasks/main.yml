@@ -1,0 +1,31 @@
+---
+- name: MONITORING.BLACKBOX | Prepare deployment
+  import_role:
+    name: docker.deployment.prepare
+  vars:
+    deployment_name: blackbox
+  tags:
+    - blackbox-exporter
+
+- name: MONITORING.BLACKBOX | Copy templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  with_items:
+    - blackbox.yml
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - blackbox-exporter
+
+- name: MONITORING.BLACKBOX | Run deployment
+  docker_service:
+    restarted: "yes"
+    project_src: "{{ docker_deployment__deploy_path }}"
+  become: yes
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  tags:
+    - run
+    - blackbox-exporter

@@ -1,0 +1,3 @@
+alertmanager__image_name: "prom/alertmanager"
+alertmanager__image_tag: "v0.20.0"
+alertmanager__image: "{{ alertmanager__image_name }}:{{ alertmanager__image_tag }}"

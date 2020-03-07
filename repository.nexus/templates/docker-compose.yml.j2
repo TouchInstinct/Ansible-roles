@@ -1,0 +1,29 @@
+version: "3"
+services:
+  nexus3:
+    container_name: "{{ nexus__container_name }}"
+    image: "{{ nexus__image }}"
+    volumes:
+      - "{{ docker_deployment__volume_path }}:/nexus-data"
+    restart: unless-stopped
+    networks:
+      - "{{ docker__traefik_network }}"
+    labels:
+      "traefik.enable": "true"
+      "traefik.docker.network": "{{ docker__traefik_network }}"
+      # ui labels
+      "traefik.ui.backend": "{{ nexus__container_name }}-ui"
+      "traefik.ui.port": "{{ nexus__ui_port }}"
+      "traefik.ui.frontend.rule": "Host:{{ domains.nexus.ui }}"
+      "traefik.ui.frontend.entryPoints": "http"
+      # registry labels
+      "traefik.registry.backend": "{{ nexus__container_name }}-registry"
+      "traefik.registry.port": "{{ nexus__registry_port }}"
+      "traefik.registry.frontend.rule": "Host:{{ domains.nexus.registry }}"
+      "traefik.registry.frontend.entryPoints": "http,https"
+      "traefik.registry.frontend.redirect.permanent": "true"
+      "traefik.registry.frontend.headers.SSLRedirect": "true"
+
+networks:
+  {{ docker__traefik_network }}:
+    external: true
