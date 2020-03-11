@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  {{ db__postgres_server_name }}:
+    container_name: "{{ db__postgres_container_name }}"
+    image: "{{ db__postgres_image }}"
+    restart: unless-stopped
+    volumes:
+      - "{{ docker_deployment__volume_path }}:/var/lib/postgresql/data"
+    command: {{ db__postgres_command_default }}
+    env_file:
+      - backup.env
+    environment:
+      - PGDATA={{ db__postgres_data_directory }}
+      - POSTGRES_DB={{ db__postgres_database_name }}
+      - POSTGRES_USER={{ db__postgres_username }}
+      - POSTGRES_PASSWORD={{ db__postgres_password }}
+    labels:
+      "traefik.enable": "false"
+    networks:
+      - "{{ docker__traefik_network }}"
+    ports:
+      - "{{ db__postgres_port }}"
+
+networks:
+  {{ docker__traefik_network }}:
+    external: true

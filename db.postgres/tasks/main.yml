@@ -1,32 +1,39 @@
 ---
-- name: DOCKER.NEXUS | Prepare deployment
+
+- name: DB.POSTGRES | Prepare deployment
   include_role:
     name: docker.deployment.prepare
     public: "yes"
   vars:
-    deployment_name: nexus
-    volume_user: "{{ nexus__volume_user }}"
+    deployment_name: "{{ db__postgres_deployment_name }}"
   tags:
-    - nexus
+    - postgres
 
-- name: DOCKER.NEXUS | Copy templates
+- name: DB.POSTGRES | Merge commandline agruments
+  set_fact:
+    db__postgres_command: "{{ db__postgres_command_default + db__postgres_command_custom }}"
+  tags:
+    - postgres
+
+- name: DB.POSTGRES | Copy templates
   template:
     src: "templates/{{ item }}.j2"
     dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
   with_items:
     - docker-compose.yml
+    - backup.env
   become_user: "{{ docker_deployment__deploy_user_name }}"
   become: yes
   tags:
     - files
-    - nexus
+    - postgres
 
-- name: DOCKER.NEXUS | Run deployment
+- name: DB.POSTGRES | Run deployment
   docker_service:
-    restarted: "yes"
     project_src: "{{ docker_deployment__deploy_path }}"
+    restarted: "yes"
   become: yes
   become_user: "{{ docker_deployment__deploy_user_name }}"
   tags:
     - run
-    - nexus
+    - postgres
