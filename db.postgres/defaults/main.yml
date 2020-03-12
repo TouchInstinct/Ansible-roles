@@ -1,31 +1,30 @@
-db__postgres_image_name: "dhub.touchin.ru/common/postgresql-walg"
-db__postgres_image_tag: "10_0.2.9"
-db__postgres_data_directory: "/var/lib/postgresql/data/pgdata"
-db__postgres_image: "{{ db__postgres_image_name }}:{{ db__postgres_image_tag }}"
+postgres__image_name: "dhub.touchin.ru/common/postgresql-walg"
+postgres__image_tag: "10_0.2.9"
+postgres__data_directory: "/var/lib/postgresql/data/pgdata"
+postgres__image: "{{ postgres__image_name }}:{{ postgres__image_tag }}"
 
-db__postgres_command_default:
+postgres__command_default:
   - "./entrypoint.sh"
   - "postgres"
 
-db__postgres_port: "5432"
-# db__postgres_port: "127.0.0.1:5432:5432"
+# postgres.port: "127.0.0.1:5432:5432"
 
-# db__postgres_database_name: my-db
-# db__postgres_username: postgres
-# db__postgres_password: secret
+# postgres.database_name: my-db
+# postgres.username: postgres
+# postgres.password: secret
 
-# db__postgres_server_name: postgres
-# db__postgres_container_name: postgres
+# postgres.service_name: postgres
+# postgres.container_name: postgres
 
-# db__postgres_backup_enabled: false
-# db__postgres_postgres_mode: "backup"
-# db__postgres_s3_region: "eu-central-1"
-# db__postgres_s3_access_key: "KEY"
-# db__postgres_s3_secret_key: "SECRET"
-# db__postgres_s3_prefix: "s3://bucket-name/path/to/subfolder"
-# db__postgres_delete_retain: 15
-# db__postgres_base_backup_in: "30 2 * * *"
+# postgres.backup_enabled: false
+# postgres.mode: "backup"
+# postgres.s3_region: "eu-central-1"
+# postgres.s3_access_key: "KEY"
+# postgres.s3_secret_key: "SECRET"
+# postgres.s3_prefix: "s3://bucket-name/path/to/subfolder"
+# postgres.delete_retain: 15
+# postgres.base_backup_in: "30 2 * * *"
 
-# db__postgres_recovery_enabled: false
-# db__postgres_archive_timeout: 600
-# db__postgres_checkpoint_timeout: 600
+# postgres.recovery_enabled: false
+# postgres.archive_timeout: 600
+# postgres.checkpoint_timeout: 600

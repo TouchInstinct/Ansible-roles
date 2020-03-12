@@ -5,13 +5,13 @@
     name: docker.deployment.prepare
     public: "yes"
   vars:
-    deployment_name: "{{ db__postgres_deployment_name }}"
+    deployment_name: "{{ postgres.deployment_name }}"
   tags:
     - postgres
 
 - name: DB.POSTGRES | Merge commandline agruments
   set_fact:
-    db__postgres_command: "{{ db__postgres_command_default + db__postgres_command_custom }}"
+    postgres__command: "{{ postgres__command_default + postgres.command_custom }}"
   tags:
     - postgres
 
