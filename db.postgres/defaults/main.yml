@@ -1,0 +1,30 @@
+postgres__image_name: "dhub.touchin.ru/common/postgresql-walg"
+postgres__image_tag: "10_0.2.9"
+postgres__data_directory: "/var/lib/postgresql/data/pgdata"
+postgres__image: "{{ postgres__image_name }}:{{ postgres__image_tag }}"
+
+postgres__command_default:
+  - "./entrypoint.sh"
+  - "postgres"
+
+# postgres.port: "127.0.0.1:5432:5432"
+
+# postgres.database_name: my-db
+# postgres.username: postgres
+# postgres.password: secret
+
+# postgres.service_name: postgres
+# postgres.container_name: postgres
+
+# postgres.backup_enabled: false
+# postgres.mode: "backup"
+# postgres.s3_region: "eu-central-1"
+# postgres.s3_access_key: "KEY"
+# postgres.s3_secret_key: "SECRET"
+# postgres.s3_prefix: "s3://bucket-name/path/to/subfolder"
+# postgres.delete_retain: 15
+# postgres.base_backup_in: "30 2 * * *"
+
+# postgres.recovery_enabled: false
+# postgres.archive_timeout: 600
+# postgres.checkpoint_timeout: 600
