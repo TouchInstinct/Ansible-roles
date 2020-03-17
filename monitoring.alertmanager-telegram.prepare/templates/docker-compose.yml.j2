@@ -3,7 +3,7 @@ version: "3.7"
 services:
   alertmanager-telegram:
     container_name: alertmanager-telegram
-    image: "{{ am_telegram__image }}"
+    image: "{{ alertmanager_telegram__image }}"
     networks:
       - "{{ docker__prometheus_network }}"
     volumes:
