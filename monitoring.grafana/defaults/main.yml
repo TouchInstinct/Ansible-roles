@@ -1,5 +1,4 @@
-# grafana__server_root: "http://10.0.8.1:7001"
-grafana__user_id: 104
+grafana__user_id: "104"
 
 grafana__image_name: "grafana/grafana"
 grafana__image_tag: "6.6.0-ubuntu"
