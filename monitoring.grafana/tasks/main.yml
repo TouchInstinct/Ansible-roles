@@ -14,10 +14,22 @@
     src: templates/{{ item }}.j2
     dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
   with_items:
-    - ldap.toml
     - docker-compose.yml
   become_user: "{{ docker_deployment__deploy_user_name }}"
   become: yes
+  tags:
+    - files
+    - grafana
+
+- name: MONITORING.GRAFANA | Copy LDAP templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  with_items:
+    - ldap.toml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  when: grafana.ldap.enable is defined and grafana.ldap.enable | bool
   tags:
     - files
     - grafana

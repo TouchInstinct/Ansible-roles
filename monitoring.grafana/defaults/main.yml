@@ -4,8 +4,6 @@ grafana__image_name: "grafana/grafana"
 grafana__image_tag: "6.6.0-ubuntu"
 grafana__image: "{{ grafana__image_name }}:{{ grafana__image_tag }}"
 
-grafana__enable_ldap_auth: "true"
-
 grafana__default_labels:
   "traefik.enable": "true"
   "traefik.port": "3000"
