@@ -9,15 +9,15 @@ search_filter = "(&(uid=%s)(memberOf={{ ldap__groups.services }}))"
 search_base_dns = ["{{ ldap__users_dn }}"]
 
 [[servers.group_mappings]]
-group_dn="{{ grafana.access_groups.admin }}"
+group_dn="{{ grafana.ldap.access_groups.admin }}"
 org_role = "Admin"
 
 [[servers.group_mappings]]
-group_dn="{{ grafana.access_groups.editor }}"
+group_dn="{{ grafana.ldap.access_groups.editor }}"
 org_role = "Editor"
 
 [[servers.group_mappings]]
-group_dn="{{ grafana.access_groups.viewer }}"
+group_dn="{{ grafana.ldap.access_groups.viewer }}"
 org_role = "Viewer"
 
 [servers.attributes]
