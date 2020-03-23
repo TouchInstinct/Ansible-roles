@@ -11,7 +11,7 @@ services:
       GF_AUTH_LDAP_ENABLED: "{{ grafana.ldap.enable }}"
     volumes:
       - "{{ docker_deployment__volume_path }}:/var/lib/grafana"
-{% if grafana.ldap.enable is defined and grafana.ldap.enable | bool %}
+{% if grafana.ldap is defined  and grafana.ldap.enable is defined and grafana.ldap.enable | bool %}
       - "./ldap.toml:/etc/grafana/ldap.toml"
 {% endif %}
     labels: {{ grafana.docker.labels | default(grafana__default_labels) | to_json }}
