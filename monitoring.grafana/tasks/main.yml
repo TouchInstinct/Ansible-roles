@@ -29,7 +29,7 @@
     - ldap.toml
   become_user: "{{ docker_deployment__deploy_user_name }}"
   become: yes
-  when: grafana.ldap.enable is defined and grafana.ldap.enable | bool
+  when: grafana.ldap is defined and grafana.ldap.enable is defined and grafana.ldap.enable | bool
   tags:
     - files
     - grafana
