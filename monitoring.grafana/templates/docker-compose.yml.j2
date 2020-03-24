@@ -9,6 +9,8 @@ services:
       GF_SERVER_DOMAIN: "{{ grafana.domain }}"
       GF_SERVER_ROOT_URL: "http://{{ grafana.domain }}"
       GF_AUTH_LDAP_ENABLED: "{{ grafana__ldap_enabled }}"
+      GF_AUTH_ANONYMOUS_ENABLED: "{{ grafana__anonymous_enabled }}"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "{{ grafana__anonymous_org_role }}"
     volumes:
       - "{{ docker_deployment__volume_path }}:/var/lib/grafana"
 {% if grafana__ldap_enabled %}
