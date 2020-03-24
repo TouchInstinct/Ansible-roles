@@ -8,10 +8,10 @@ services:
     environment:
       GF_SERVER_DOMAIN: "{{ grafana.domain }}"
       GF_SERVER_ROOT_URL: "http://{{ grafana.domain }}"
-      GF_AUTH_LDAP_ENABLED: "{{ grafana.ldap is defined and grafana.ldap.enable | default(false) }}"
+      GF_AUTH_LDAP_ENABLED: "{{ grafana__ldap_enabled }}"
     volumes:
       - "{{ docker_deployment__volume_path }}:/var/lib/grafana"
-{% if grafana.ldap is defined  and grafana.ldap.enable is defined and grafana.ldap.enable | bool %}
+{% if grafana__ldap_enabled %}
       - "./ldap.toml:/etc/grafana/ldap.toml"
 {% endif %}
     labels: {{ grafana.docker.labels | default(grafana__default_labels) | to_json }}
