@@ -1,3 +1,4 @@
+{% if grafana__ldap_enabled %}
 [[servers]]
 host = "{{ ldap__host }}"
 port = {{ ldap__port }}
@@ -26,3 +27,4 @@ surname = "sn"
 username = "uid"
 member_of = "memberOf"
 email = "mail"
+{% endif %}

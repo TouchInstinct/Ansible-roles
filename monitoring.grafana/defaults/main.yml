@@ -11,3 +11,7 @@ grafana__default_labels:
   "traefik.docker.network": "{{ docker__traefik_network }}"
   "traefik.frontend.rule": "Host:{{ grafana.domain }}"
   "traefik.frontend.entryPoints": "http"
+
+grafana__ldap_enabled: "{{ grafana.ldap is defined and grafana.ldap.enable | default(false) | bool }}"
+grafana__anonymous_enabled: "{{ grafana.anonymous is defined and grafana.anonymous.enable | default(false) | bool }}"
+grafana__anonymous_org_role: "Viewer"
