@@ -1,0 +1,3 @@
+redis__image_name: "redis"
+redis__image_tag: "alpine"
+redis__image: "{{ redis__image_name }}:{{ redis__image_tag }}"

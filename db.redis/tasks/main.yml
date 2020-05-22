@@ -1,0 +1,32 @@
+---
+
+- name: DB.REDIS | Prepare deployment
+  include_role:
+    name: docker.deployment.prepare
+    public: "yes"
+  vars:
+    deployment_name: redis
+  tags:
+    - redis
+
+- name: DB.REDIS | Copy templates
+  template:
+    src: "templates/{{ item }}.j2"
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  with_items:
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - redis
+
+- name: DB.REDIS | Run deployment
+  docker_service:
+    restarted: "yes"
+    project_src: "{{ docker_deployment__deploy_path }}"
+  become: yes
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  tags:
+    - run
+    - redis
