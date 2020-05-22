@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  redis:
+    container_name: redis
+    image: "{{ redis.image | default(redis__image) }}"
+    restart: unless-stopped
+{% if redis is defined and redis.port is defined %}
+    ports:
+      - "{{ redis.port }}:6379"
+{% endif %}
