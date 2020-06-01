@@ -19,10 +19,6 @@ services:
     labels: {{ grafana.docker.labels | default(grafana__default_labels) | to_json }}
     networks: {{ grafana.docker.networks | default([]) | to_json }}
     restart: unless-stopped
-{% if grafana.port is defined %}
-    ports:
-      - "{{ grafana.port }}:3000"
-{% endif %}
     logging:
       driver: json-file
       options:
