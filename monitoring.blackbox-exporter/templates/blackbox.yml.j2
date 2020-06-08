@@ -5,7 +5,8 @@ modules:
   http:
     prober: http
     timeout: 5s
-    http: {}
+    http:
+      valid_status_codes: [200, 401, 403, 404]
   tcp:
     prober: tcp
     timeout: 5s
