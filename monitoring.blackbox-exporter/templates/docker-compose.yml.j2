@@ -10,6 +10,9 @@ services:
     restart: unless-stopped
     ports:
       - "{{ blackbox_exporter__port }}:9115"
+{% if blackbox_exporter is defined and blackbox_exporter.docker is defined %}
+    extra_hosts: {{ blackbox_exporter.docker.extra_hosts | default([]) | to_json }}
+{% endif %}
     logging:
       driver: json-file
       options:
