@@ -12,6 +12,9 @@ services:
     restart: unless-stopped
     ports:
       - "{{ prometheus__port }}:9090"
+{% if prometheus is defined and prometheus.docker is defined %}
+    extra_hosts: {{ prometheus.docker.extra_hosts | default([]) | to_json }}
+{% endif %}
     logging:
       driver: "json-file"
       options:
