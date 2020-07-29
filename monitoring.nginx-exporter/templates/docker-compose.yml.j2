@@ -9,8 +9,6 @@ services:
       - "{{ nginx_exporter__port }}:9113"
 {% if nginx_exporter is defined and nginx_exporter.docker is defined %}
     extra_hosts: {{ nginx_exporter.docker.extra_hosts | default([]) | to_json }}
-{% endif %}
-{% if nginx_exporter is defined and nginx_exporter.docker is defined %}
     environment: {{ nginx_exporter.docker.environment | default([]) | to_json }}
 {% endif %}
     logging:
