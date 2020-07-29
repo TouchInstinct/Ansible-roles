@@ -1,0 +1,30 @@
+---
+- name: MONITORING.NGINX-EXPORTER | Prepare deployment
+  import_role:
+    name: docker.deployment.prepare
+  vars:
+    deployment_name: nginx
+  tags:
+    - nginx-exporter
+
+- name: MONITORING.NGINX-EXPORTER | Copy templates
+  template:
+    src: templates/{{ item }}.j2
+    dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+  loop:
+    - docker-compose.yml
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  tags:
+    - files
+    - nginx-exporter
+
+- name: MONITORING.NGINX-EXPORTER | Run deployment
+  docker_service:
+    restarted: "yes"
+    project_src: "{{ docker_deployment__deploy_path }}"
+  become: yes
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  tags:
+    - run
+    - nginx-exporter

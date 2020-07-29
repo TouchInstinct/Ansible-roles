@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  nginx-exporter:
+    container_name: nginx-exporter
+    image: "{{ nginx_exporter__image }}"
+    restart: unless-stopped
+    ports:
+      - "{{ nginx_exporter__port }}:9113"
+{% if nginx_exporter is defined and nginx_exporter.docker is defined %}
+    extra_hosts: {{ nginx_exporter.docker.extra_hosts | default([]) | to_json }}
+    environment: {{ nginx_exporter.docker.environment | default([]) | to_json }}
+{% endif %}
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "50m"
