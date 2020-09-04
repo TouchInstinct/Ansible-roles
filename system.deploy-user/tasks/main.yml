@@ -24,6 +24,8 @@
   template:
     src: "templates/docker-config.json.j2"
     dest: "{{ system__deploy_user_home }}/.docker/config.json"
+    owner: "{{ system__deploy_user_name }}"
+    mode: 0600
   when: docker is defined
   tags:
     - files
