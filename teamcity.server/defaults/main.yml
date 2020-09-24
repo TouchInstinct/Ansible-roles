@@ -1,0 +1,11 @@
+teamcity_server__image_name: "jetbrains/teamcity-server"
+teamcity_server__image_tag: "2019.1.1"
+teamcity_server__image: "{{ teamcity_server__image_name }}:{{ teamcity_server__image_tag }}"
+
+teamcity__default_labels:
+  "traefik.enable": "true"
+  "traefik.port": "8111"
+  "traefik.backend": "teamcity.server"
+  "traefik.docker.network": "{{ docker__traefik_network }}"
+  "traefik.frontend.rule": "Host:{{ teamcity_server.domain }}"
+  "traefik.frontend.entryPoints": "http"
