@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  teamcity-server:
+    container_name: teamcity-server
+    image: "{{ teamcity_server__image }}"
+    restart: unless-stopped
+    networks: {{ teamcity_server.docker.networks | default([]) | to_json }}
+    labels: {{ teamcity_server.docker.labels | default(teamcity_server__default_labels) | to_json }}
+{% if teamcity_server.port is defined %}
+    ports:
+      - "{{ teamcity_server.port }}:8111"
+{% endif %}
+    logging:
+      driver: json-file
+      options:
+        max-file: "1"
+        max-size: "50m"
+    environment:
+      TEAMCITY_SERVER_MEM_OPTS: ""
+    volumes:
+      - "{{ docker_deployment__volume_path }}:/data/teamcity_server/datadir"
+      - "./ldap-mapping.xml:/data/teamcity_server/datadir/config/ldap-mapping.xml"
+      - "./ldap-config.properties:/data/teamcity_server/datadir/config/ldap-config.properties"
+
+{% if teamcity_server.docker.networks is defined %}
+networks:
+  {% for network in teamcity_server.docker.networks %}
+{{ network | indent(width=2) }}:
+    external: true
+  {% endfor %}
+{% endif %}
