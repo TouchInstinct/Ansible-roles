@@ -5,7 +5,6 @@
     public: "yes"
   vars:
     deployment_name: teamcity.server
-    volume_user: "{{ grafana__user_id }}"
   tags:
     - teamcity.server
 
