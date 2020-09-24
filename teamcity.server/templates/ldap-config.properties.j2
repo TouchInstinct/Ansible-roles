@@ -5,10 +5,10 @@ java.naming.security.credentials={{ ldap__bindpw }}
 teamcity.options.users.synchronize=true
 teamcity.options.groups.synchronize=true
 
-teamcity.users.login.filter=(&(uid=$capturedLogin$)(objectClass=inetOrgPerson)(|(memberOf={{ ldap_groups.services }})(memberOf={{ ldap_groups.services_external }})))
+teamcity.users.login.filter=(&(uid=$capturedLogin$)(objectClass=inetOrgPerson)(|(memberOf={{ ldap__groups.services }})(memberOf={{ ldap__groups.services_external }})))
 
 teamcity.users.base=ou=users
-teamcity.users.filter=(&(objectClass=inetOrgPerson)(|(memberOf={{ ldap_groups.services }})(memberOf={{ ldap_groups.services_external }})))
+teamcity.users.filter=(&(objectClass=inetOrgPerson)(|(memberOf={{ ldap__groups.services }})(memberOf={{ ldap__groups.services_external }})))
 
 teamcity.users.username=uid
 teamcity.users.property.displayName=cn
