@@ -4,7 +4,7 @@
     name: docker.deployment.prepare
     public: "yes"
   vars:
-    deployment_name: teamcity.server
+    deployment_name: teamcity-server
   tags:
     - teamcity.server
 
