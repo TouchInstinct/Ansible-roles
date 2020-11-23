@@ -28,6 +28,18 @@
     - files
     - filebeat
 
+- name: MONITORING.FILEBEAT | Create modules directory
+  file:
+    path: "{{ docker_deployment__deploy_path }}/modules.d"
+    state: directory
+    mode: 0755
+    owner: "{{ docker_deployment__deploy_user_name }}"
+  become: yes
+  become_user: "{{ docker_deployment__deploy_user_name }}"
+  tags:
+    - files
+    - filebeat
+
 - name: MONITORING.FILEBEAT | Run deployment
   docker_service:
     restarted: "yes"

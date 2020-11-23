@@ -9,6 +9,7 @@ services:
       - /var/lib/docker:/var/lib/docker:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./modules.d:/usr/share/filebeat/modules.d:ro
     restart: unless-stopped
     logging:
       driver: json-file
