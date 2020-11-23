@@ -11,6 +11,7 @@
   template:
     src: templates/{{ item }}.j2
     dest: "{{ docker_deployment__deploy_path }}/{{ item }}"
+    mode: "644"
   with_items:
     - filebeat.yml
     - docker-compose.yml
