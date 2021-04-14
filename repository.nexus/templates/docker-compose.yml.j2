@@ -16,6 +16,13 @@ services:
       "traefik.ui.port": "{{ nexus__ui_port }}"
       "traefik.ui.frontend.rule": "Host:{{ domains.nexus.ui }}"
       "traefik.ui.frontend.entryPoints": "http"
+      # maven labels
+      "traefik.maven.backend": "{{ nexus__container_name }}-maven"
+      "traefik.maven.port": "{{ nexus__ui_port }}"
+      "traefik.maven.frontend.rule": "Host:{{ domains.nexus.registry }};AddPrefix:{{ nexus__maven_public_repository_path }}"
+      "traefik.maven.frontend.entryPoints": "http,https"
+      "traefik.maven.frontend.redirect.permanent": "true"
+      "traefik.maven.frontend.headers.SSLRedirect": "true"
       # registry labels
       "traefik.registry.backend": "{{ nexus__container_name }}-registry"
       "traefik.registry.port": "{{ nexus__registry_port }}"
