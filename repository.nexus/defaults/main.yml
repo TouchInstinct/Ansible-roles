@@ -7,3 +7,5 @@ nexus__ui_port: "8081"
 nexus__registry_port: "8082"
 
 nexus__volume_user: "200"
+
+nexus__maven_public_repository_path: "/repository/touchin-maven-public"
