@@ -4,6 +4,7 @@ services:
   teamcity-server:
     container_name: teamcity-server
     image: "{{ teamcity_server__image }}"
+    user: root
     restart: unless-stopped
     networks: {{ teamcity_server.docker.networks | default([]) | to_json }}
     labels: {{ teamcity_server.docker.labels | default(teamcity_server__default_labels) | to_json }}
