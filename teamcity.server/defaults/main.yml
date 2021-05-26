@@ -1,5 +1,5 @@
 teamcity_server__image_name: "jetbrains/teamcity-server"
-teamcity_server__image_tag: "2019.1.1"
+teamcity_server__image_tag: "2021.1"
 teamcity_server__image: "{{ teamcity_server__image_name }}:{{ teamcity_server__image_tag }}"
 
 teamcity_server__default_labels:
